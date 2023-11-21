@@ -1,52 +1,51 @@
-import requests
-import sys
-import time
+import assemblyai as aai
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
-arg_list= sys.argv
-filename= arg_list[1]
-language= arg_list[2]
+def transcribir_audio(api_key, audio_path):
+    aai.settings.api_key = api_key
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(audio_path)
+    oraciones = transcript.get_paragraphs()
+    oraciones_texto = [parrafo.text for parrafo in oraciones]
+    texto_transcrito = ' '.join(oraciones_texto)
+    return texto_transcrito
 
-upload_endpoint= "https://api.assemblyai.com/v2/upload"
-headers= {"authorizathion": "46f3fc0a6e364888acf89978f15a5d24"}
+def generar_respuesta(prompt, modelo, tokenizer, max_length=500, min_length=20):
+    entrada_codificada = tokenizer.encode(prompt, return_tensors='pt')
+    salida = modelo.generate(
+        entrada_codificada,
+        max_length=max_length,
+        min_length=min_length,
+        num_beams=10,
+        use_cache= True,
+        no_repeat_ngram_size=1,
+        top_k=50,
+        top_p=0.95,
+        temperature=0.1,
+    )
+    texto_generado = tokenizer.decode(salida[0], skip_special_tokens=True)
+    texto_generado = texto_generado.strip()
+    return texto_generado
 
-def read_file(filename, chunk_size=5242880):
-  with open(filename, 'rb') as _file:
-    while True:
-      data= _file.read(chunk_size)
-      if not data:
-        break
-      yield data 
 
-upload_response= requests.post(upload_endpoint, headers= headers, data= read_file())
-print(upload_response.json())
-audio_url= upload_response.json()['upload_url']
+def main():
+    api_key_assemblyai = "46f3fc0a6e364888acf89978f15a5d24"
+    audio_path = "onlymp3.to - Speech recognition in Python made easy Python Tutorial-YdYTSxEW5bA-192k-1700264266.mp3"  
 
-transcription_endpoint= "https://api.assemblyai.com/v2/transcript"
+    texto_transcrito = transcribir_audio(api_key_assemblyai, audio_path)
 
-json= {"audio_url":audio_url, 
-       "language_code":language}
+    print(texto_transcrito)
 
-transcription_response= requests.post(transcription_endpoint, headers= headers, json= json)
-print(transcription_response,json())
+    modelo_gpt2 = GPT2LMHeadModel.from_pretrained('gpt2')
+    tokenizer_gpt2 = GPT2Tokenizer.from_pretrained('gpt2')
 
-transcript_id= transcription_response.json()['id']
+    pregunta = "\nTell me about the content of the transcribed text. Who is the patrick?"
 
-polling_endpoint= transcription_endpoint + "/" + transcript_id
+    respuesta_generada = generar_respuesta(pregunta, modelo_gpt2, tokenizer_gpt2)
 
-while True:
-  polling_response= requests.get(polling_endpoint, headers= headers)
-  polling_response.json()['status']
+    print("\nRespuesta generada:")
+    print(respuesta_generada)
 
-  if status == "completed":
+if __name__ == "__main__":
+    main()
 
-    with open(language + "transcription.txt", "w") as f:
-      f.write(polling_response.json()['text'])
-
-  elif status == "error":
-    print('The transcription has errored out!')
-    break
-
-  else:
-    print(status)
-    time.sleep(2)
-    continue
