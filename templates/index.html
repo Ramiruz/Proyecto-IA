@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ css_url }}">
+    <title>AI final proyect</title>
+</head>
+<body>
+    <section id= "part1">
+        <form action="/" method="post">
+            <div class="hot_zone">
+                <label for="audio_file" class="label">Drop your files here</label>
+                <input type="file" name="audio" id="audio_file" accept="audio/mp3">
+            </div>
+            <div>
+                <input type="button" value="Submit" class="button">
+            </div>
+        </form>
+        <div class="texto">
+            <p>Tipos de archivo aceptados:</p>
+            <ul>
+                <li>audio format .mp3</li>
+            </ul>
+        </div>    
+        
+    </section>
+    <br>
+
+
+
+    <section id= "part2">
+        <h1 class="titulo">Sumary of your audio file</h1>
+        <div class="resonse">
+            <p>{{response}}</p>
+        </div>
+    </section>
+</body>
+</html>
