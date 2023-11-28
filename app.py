@@ -1,5 +1,6 @@
-from flask import Flask, url_for, render_template
-
+from flask import Flask, url_for, render_template, request
+from Proyecto_IA.ACSIA import transcribir_audio, generar_respuesta 
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 app = Flask(__name__)
 
 
@@ -10,8 +11,13 @@ def assembly():  # put application's code here
 
 @app.post('/')
 def pene():
-    1+1
-
+   audio = request.form['audio']   
+   texto_transcrit = transcribir_audio("46f3fc0a6e364888acf89978f15a5d24", audio)
+   modelo_gpt2 = GPT2LMHeadModel.from_pretrained('gpt2')
+   tokenizer_gpt2 = GPT2Tokenizer.from_pretrained('gpt2')
+   pregunta = "\nTell me about the content of the transcribed text. Who is the patrick?"
+   respuesta_generada = generar_respuesta(pregunta, modelo_gpt2, tokenizer_gpt2)
+   return render_template("index.html", respuesta_generada= respuesta_generada)
 
 if __name__ == '__main__':
     app.run()
