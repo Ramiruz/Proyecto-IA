@@ -37,6 +37,10 @@ def assembly():
 # Ruta para el método POST, que procesa la carga y transcripción del archivo de audio
 @app.post('/')
 def index():
+    
+    css_url = url_for('static', filename='style.css')
+
+
     if request.method == 'POST':
         api_key_assemblyai = "46f3fc0a6e364888acf89978f15a5d24"
 
@@ -54,12 +58,13 @@ def index():
         # Generar un resumen utilizando el modelo de resumen BERT
         bert_model = Summarizer()
         bert_summary = ''.join(bert_model(transcribed_text, min_length=60))
+        print(bert_summary)
 
         # Renderizar la página con el texto transcrito y el resumen BERT
-        return render_template('index.html', transcript=transcribed_text, summary=bert_summary)
+    return render_template('index.html', summary=bert_summary, css_url=css_url)
 
     # Renderizar la página si no hay una solicitud POST
-    return render_template('index.html', transcript="", summary="")
+    #return render_template('index.html', summary="")
 
 
 # Ejecutar la aplicación si el script se ejecuta directamente
