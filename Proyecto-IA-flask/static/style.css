@@ -1,0 +1,88 @@
+*{
+    background:#DDF2FD ;
+    margin: 0;
+    padding: 0;
+    margin-left: 5%;
+    font-family: Inter;
+    color: #000;
+
+}
+#part1{
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+    margin-top: 1.4rem;
+}
+#part2{
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+}
+div{
+    margin: 0;
+}
+form{
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+}
+/* parte uno css */
+.hot_zone{
+    width: 55.37rem;
+    height: 12rem;
+    flex-shrink: 0;
+    border-radius: 1.3rem;
+    background: #9BBEC8;
+    position: relative;
+    left: 25%;
+    display: grid;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+.label{
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.button{
+    width: 8.3rem;
+    height: 2.62rem;
+    flex-shrink: 0;
+    border-radius: 0.93rem;
+    background: #164863;
+    color: #FFF;
+    font-size: 1.18rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: relative;
+    left: 105%;
+    top: 0.5rem;
+}
+.texto{
+    width: 13rem;
+    height: fit-content;
+    position: relative;
+    left: 25%;
+}
+/* seccion 2 */
+.titulo{
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: fit-content;
+    position: relative;
+    left: 21%;
+}
+.resonse{
+    width: 55.37rem;
+    height: 12rem;
+    flex-shrink: 0;
+    border-radius: 1.3rem;
+    background: #9BBEC8;
+    position: relative;
+    left: 25%;
+}
